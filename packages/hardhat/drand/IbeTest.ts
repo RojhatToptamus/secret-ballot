@@ -1,4 +1,4 @@
-// npx mocha --require ts-node/register --timeout 30000 crypto/IbeTest.ts
+// npx mocha --require ts-node/register --timeout 30000 drand/IbeTest.ts
 import { expect } from "chai";
 import { encryptOnG2RFC9380, decryptOnG2 } from "./ibe";
 import { getRoundData, getChainInfo } from "./drandClient";
@@ -44,6 +44,13 @@ describe("Drand IBE Integration Tests", () => {
 
     // Encrypt with RFC9380 method (which we know works)
     const ciphertext = await encryptOnG2RFC9380(publicKeyBytes, roundID, messageBytes);
+
+    // u always 96 v w depends on the message length total_bytes = 96 + (2 * message_length)
+    console.log("Ciphertext details:", {
+      U_length: ciphertext.U,
+      V_length: ciphertext.V,
+      W_length: ciphertext.W,
+    });
 
     // Log ciphertext details
     console.log("Ciphertext details:", {
