@@ -753,6 +753,22 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@aztec/bb.js@npm:^0.82.0":
+  version: 0.82.0
+  resolution: "@aztec/bb.js@npm:0.82.0"
+  dependencies:
+    comlink: ^4.4.1
+    commander: ^12.1.0
+    debug: ^4.3.4
+    fflate: ^0.8.0
+    pako: ^2.1.0
+    tslib: ^2.4.0
+  bin:
+    bb.js: dest/node/main.js
+  checksum: c6b47b206288b09cb0cc0cc8b908c722c86c1d8f125eb7d9ce06c7bc8919103b20dfe3255d98f194797fbfc406f4f2188b6456813569f9c851b292d4942b1fff
+  languageName: node
+  linkType: hard
+
 "@babel/code-frame@npm:^7.22.13, @babel/code-frame@npm:^7.26.2":
   version: 7.26.2
   resolution: "@babel/code-frame@npm:7.26.2"
@@ -3148,6 +3164,50 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@noir-lang/acvm_js@npm:1.0.0-beta.3-fdd2fe7.nightly":
+  version: 1.0.0-beta.3-fdd2fe7.nightly
+  resolution: "@noir-lang/acvm_js@npm:1.0.0-beta.3-fdd2fe7.nightly"
+  checksum: 96068b931841d6b933a5a59c4b565b651d6ce4cd647e308245c59f58228c2621b6463ebcdee6b59be89fc7b97decbfb835ebd4b76d77a28fa10e995270a94c9d
+  languageName: node
+  linkType: hard
+
+"@noir-lang/noir_js@npm:^1.0.0-beta.3":
+  version: 1.0.0-beta.3-fdd2fe7.nightly
+  resolution: "@noir-lang/noir_js@npm:1.0.0-beta.3-fdd2fe7.nightly"
+  dependencies:
+    "@noir-lang/acvm_js": 1.0.0-beta.3-fdd2fe7.nightly
+    "@noir-lang/noirc_abi": 1.0.0-beta.3-fdd2fe7.nightly
+    "@noir-lang/types": 1.0.0-beta.3-fdd2fe7.nightly
+  checksum: 566a2dfd28e50de8f4c909f6edea4df74a8d3246979a076b3b7f8a24d86f0b6d571b8a80c3d74f4e9695bb1934dddd5b400834a91321fe36d1f43187275a4965
+  languageName: node
+  linkType: hard
+
+"@noir-lang/noir_wasm@npm:^1.0.0-beta.3":
+  version: 1.0.0-beta.3-fdd2fe7.nightly
+  resolution: "@noir-lang/noir_wasm@npm:1.0.0-beta.3-fdd2fe7.nightly"
+  dependencies:
+    "@noir-lang/types": 1.0.0-beta.3-fdd2fe7.nightly
+    pako: ^2.1.0
+  checksum: 247edf113cde0245a9dddc2216fcaf762d7087e798847ff11ed65e9f9b6c92d925e5fe1c93a91e09040a36e28f530a490dc69d9ad522f4c50842c66d41c6c1ed
+  languageName: node
+  linkType: hard
+
+"@noir-lang/noirc_abi@npm:1.0.0-beta.3-fdd2fe7.nightly":
+  version: 1.0.0-beta.3-fdd2fe7.nightly
+  resolution: "@noir-lang/noirc_abi@npm:1.0.0-beta.3-fdd2fe7.nightly"
+  dependencies:
+    "@noir-lang/types": 1.0.0-beta.3-fdd2fe7.nightly
+  checksum: 99f01f9d18deac84dc89c54685e95f7f51d4b160c645cff8b3752bfe711a62ba4803c78121f91db0f271685a8650d905a36f86676234b855c04f06f4b8c285ab
+  languageName: node
+  linkType: hard
+
+"@noir-lang/types@npm:1.0.0-beta.3-fdd2fe7.nightly":
+  version: 1.0.0-beta.3-fdd2fe7.nightly
+  resolution: "@noir-lang/types@npm:1.0.0-beta.3-fdd2fe7.nightly"
+  checksum: 79d50caa0c562a671b9ba88a913878b1d4c755f545c953d90b76f405c2aa9f0b1f76cac3dc5819fde55216ba01e89c64f16c6372b8c21d019e6a8ced4d6d3025
+  languageName: node
+  linkType: hard
+
 "@nolyfill/is-core-module@npm:1.0.39":
   version: 1.0.39
   resolution: "@nolyfill/is-core-module@npm:1.0.39"
@@ -3972,9 +4032,12 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@se-2/hardhat@workspace:packages/hardhat"
   dependencies:
+    "@aztec/bb.js": ^0.82.0
     "@ethersproject/abi": ~5.7.0
     "@ethersproject/providers": ~5.7.2
     "@inquirer/password": ^4.0.2
+    "@noir-lang/noir_js": ^1.0.0-beta.3
+    "@noir-lang/noir_wasm": ^1.0.0-beta.3
     "@nomicfoundation/hardhat-chai-matchers": ~2.0.7
     "@nomicfoundation/hardhat-ethers": ~3.0.8
     "@nomicfoundation/hardhat-network-helpers": ~1.0.11
@@ -8176,6 +8239,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"comlink@npm:^4.4.1":
+  version: 4.4.2
+  resolution: "comlink@npm:4.4.2"
+  checksum: 35313f26fdd78c202be21be49a7607f57e9e91963399b524676742ee0cf7db589be500d923ed0809b53f37996461186fb345bf867d93236be22bfae3cb7bd07e
+  languageName: node
+  linkType: hard
+
 "command-exists@npm:^1.2.8":
   version: 1.2.9
   resolution: "command-exists@npm:1.2.9"
@@ -8211,6 +8281,13 @@ __metadata:
   version: 10.0.1
   resolution: "commander@npm:10.0.1"
   checksum: 436901d64a818295803c1996cd856621a74f30b9f9e28a588e726b2b1670665bccd7c1a77007ebf328729f0139838a88a19265858a0fa7a8728c4656796db948
+  languageName: node
+  linkType: hard
+
+"commander@npm:^12.1.0":
+  version: 12.1.0
+  resolution: "commander@npm:12.1.0"
+  checksum: 68e9818b00fc1ed9cdab9eb16905551c2b768a317ae69a5e3c43924c2b20ac9bb65b27e1cab36aeda7b6496376d4da908996ba2c0b5d79463e0fb1e77935d514
   languageName: node
   linkType: hard
 
@@ -10322,6 +10399,13 @@ __metadata:
     picomatch:
       optional: true
   checksum: fa53e13c63e8c14add5b70fd47e28267dd5481ebbba4b47720ec25aae7d10a800ef0f2e33de350faaf63c10b3d7b64138925718832220d593f75e724846c736d
+  languageName: node
+  linkType: hard
+
+"fflate@npm:^0.8.0":
+  version: 0.8.2
+  resolution: "fflate@npm:0.8.2"
+  checksum: 29470337b85d3831826758e78f370e15cda3169c5cd4477c9b5eea2402261a74b2975bae816afabe1c15d21d98591e0d30a574f7103aa117bff60756fa3035d4
   languageName: node
   linkType: hard
 
@@ -14674,6 +14758,13 @@ __metadata:
   bin:
     pacote: bin/index.js
   checksum: 6fc395b579799da4bafa1d1b309df03a0b2540dfb29c312ee17e60afdec872d4da11398fc2be081184c0b73def935bb5ebf57b193623926ec2e502e4b98fe6ea
+  languageName: node
+  linkType: hard
+
+"pako@npm:^2.1.0":
+  version: 2.1.0
+  resolution: "pako@npm:2.1.0"
+  checksum: 71666548644c9a4d056bcaba849ca6fd7242c6cf1af0646d3346f3079a1c7f4a66ffec6f7369ee0dc88f61926c10d6ab05da3e1fca44b83551839e89edd75a3e
   languageName: node
   linkType: hard
 
