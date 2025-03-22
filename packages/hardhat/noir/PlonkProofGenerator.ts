@@ -3,6 +3,7 @@ import { Noir } from "@noir-lang/noir_js";
 import { UltraPlonkBackend } from "@aztec/bb.js";
 import { InputValue, ProofData } from "@noir-lang/types";
 import type { ProgramCompilationArtifacts } from "@noir-lang/noir_wasm";
+import path from "path";
 
 interface CircuitConfig {
   noirInstance: Noir;
@@ -35,7 +36,10 @@ export class PlonkProofGenerator {
   }
 
   async initializeCircuit(circuitName: string, vkPath: string): Promise<void> {
-    const compilation = await this.compileCircuit(circuitName);
+    const projectPath = path.resolve(path.join(process.cwd(), "secret-ballot-circuits", "circuits", circuitName));
+    console.log(`Resolving circuit at: ${projectPath}`);
+
+    const compilation = await this.compileCircuit(projectPath);
     const { Noir } = await import("@noir-lang/noir_js");
     const noirInstance = new Noir(compilation.program);
     const backend = new UltraPlonkBackend(compilation.program.bytecode);

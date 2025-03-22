@@ -22,6 +22,7 @@
   },
   "dependencies": {
     "@aztec/bb.js": "^0.82.0",
+    "@aztec/foundation": "^0.82.0",
     "@inquirer/password": "^4.0.2",
     "@noir-lang/noir_js": "^1.0.0-beta.3",
     "@noir-lang/noir_wasm": "^1.0.0-beta.3",
