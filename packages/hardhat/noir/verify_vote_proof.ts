@@ -1,4 +1,4 @@
-// npx tsx packages/hardhat/noir/verify_proof.ts
+// npx tsx packages/hardhat/noir/verify_vote_proof.ts
 import { PlonkProofGenerator } from "./PlonkProofGenerator";
 import { poseidon2Hash } from "@aztec/foundation/crypto";
 import { Fr } from "@aztec/foundation/fields";
@@ -8,7 +8,7 @@ async function main() {
     // Test 1: Hash a single value
     // Define the exact values used in the Noir test
     const userAddress = new Fr(1323);
-    const voteString = "01123423";
+    const voteString = "01234567";
 
     // Convert string to bytes (UTF-8)
     const voteBytes = Buffer.from(voteString, "utf-8");
@@ -24,10 +24,18 @@ async function main() {
     console.log("TS final hash:", hash.toString());
 
     // Values to use in your proof generation
+    // Values to use in your proof generation
     console.log("\nValues for proof generation:");
     console.log("user_address:", userAddress.toString());
     console.log("vote_string:", voteString);
     console.log("commitment_hash:", hash.toString());
+
+    // STEP 3: Update your prover.toml with these exact values
+    console.log("\nFor prover.toml:");
+    console.log(`voter_address = "${userAddress.toString()}"`);
+    console.log(`vote = "${voteString}"`);
+    console.log(`commitment = "${hash.toString()}"`);
+
     const projectRoot = path.resolve(__dirname, "../..");
 
     const proofGenerator = new PlonkProofGenerator();
@@ -37,12 +45,18 @@ async function main() {
       path.join(projectRoot, "secret-ballot-circuits/circuits/vote_verifier/vk.bin"),
     );
     // Generate the proof
-    const proof = await proofGenerator.generateProof("vote_verifier", {
+    const proofResult = await proofGenerator.generateProof("vote_verifier", {
       voter_address: userAddress.toString(),
       vote: voteString,
       commitment: hash.toString(),
     });
-    console.log("Proof generated:", proof);
+    console.log("Proof generated:", proofResult);
+    console.log("proof", proofResult.proof.toString());
+    console.log("public_inputs", proofResult.publicInputs.toString());
+    console.log("------------------------------");
+    const hexProof = proofGenerator.uint8ArrayToHex(proofResult.proof);
+    console.log("Hex proof:", hexProof);
+    console.log("------------------------------");
   } catch (error) {
     console.log("Error in main:", error);
     console.log(`Error: ${error}`);

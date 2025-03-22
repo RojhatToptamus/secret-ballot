@@ -71,4 +71,35 @@ export class PlonkProofGenerator {
     console.log(proofObject);
     return proofObject;
   }
+
+  public uint8ArrayToHex(buffer: Uint8Array): string {
+    const hex: string[] = [];
+
+    buffer.forEach(function (i) {
+      let h = i.toString(16);
+      if (h.length % 2) {
+        h = "0" + h;
+      }
+      hex.push(h);
+    });
+
+    return "0x" + hex.join("");
+  }
+
+  public hexToUint8Array(hex: string): Uint8Array {
+    const sanitisedHex = BigInt(hex).toString(16).padStart(64, "0");
+
+    const len = sanitisedHex.length / 2;
+    const u8 = new Uint8Array(len);
+
+    let i = 0;
+    let j = 0;
+    while (i < len) {
+      u8[i] = parseInt(sanitisedHex.slice(j, j + 2), 16);
+      i += 1;
+      j += 2;
+    }
+
+    return u8;
+  }
 }
