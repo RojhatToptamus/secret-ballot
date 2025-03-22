@@ -16874,7 +16874,6 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "se-2@workspace:."
   dependencies:
-    "@aztec/foundation": ^0.82.0
     husky: ~9.1.6
     lint-staged: ~13.2.2
   languageName: unknown
