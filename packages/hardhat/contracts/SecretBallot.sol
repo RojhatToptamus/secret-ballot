@@ -2,7 +2,7 @@
 pragma solidity ^0.8.0;
 
 import "./ISecretBallot.sol";
-import {IVerifier} from  "./IVerifier.sol";
+import {IVerifier} from "./IVerifier.sol";
 
 contract SecretBallot is ISecretBallot {
   uint256 public proposalCounter;
@@ -83,7 +83,7 @@ contract SecretBallot is ISecretBallot {
 
     bytes32[] memory publicInputs = new bytes32[](2);
     publicInputs[0] = keccak256(abi.encodePacked(voter));
-    publicInputs[0] = new_commitment;
+    publicInputs[1] = new_commitment;
 
     require(voteVerifier.verify(proof, publicInputs), "Invalid vote proof");
 
@@ -105,16 +105,15 @@ contract SecretBallot is ISecretBallot {
 
     bytes32[] memory publicInputs = new bytes32[](2);
     publicInputs[0] = keccak256(abi.encodePacked(total_yes));
-    publicInputs[0] = final_commitment;
+    publicInputs[1] = final_commitment;
+    
     require(tallyVerifier.verify(proof, publicInputs), "Invalid vote proof");
 
     proposal.yesVotes = total_yes;
     proposal.noVotes = voterCounts[proposalId] - proposal.yesVotes;
-
     proposal.isActive = false;
 
     emit TallyPublished(proposalId);
-
     return true;
   }
 

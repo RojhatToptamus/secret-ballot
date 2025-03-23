@@ -6,8 +6,459 @@ import { GenericContractsDeclaration } from "~~/utils/scaffold-eth/contract";
 
 const deployedContracts = {
   31337: {
+    HonkVerifier: {
+      address: "0xDc64a140Aa3E981100a9becA4E685f962f0cF6C9",
+      abi: [
+        {
+          inputs: [],
+          name: "PublicInputsLengthWrong",
+          type: "error",
+        },
+        {
+          inputs: [],
+          name: "ShpleminiFailed",
+          type: "error",
+        },
+        {
+          inputs: [],
+          name: "SumcheckFailed",
+          type: "error",
+        },
+        {
+          inputs: [
+            {
+              internalType: "bytes",
+              name: "proof",
+              type: "bytes",
+            },
+            {
+              internalType: "bytes32[]",
+              name: "publicInputs",
+              type: "bytes32[]",
+            },
+          ],
+          name: "verify",
+          outputs: [
+            {
+              internalType: "bool",
+              name: "",
+              type: "bool",
+            },
+          ],
+          stateMutability: "view",
+          type: "function",
+        },
+      ],
+      inheritedFunctions: {},
+    },
+    SecretBallot: {
+      address: "0x8A791620dd6260079BF849Dc5567aDC3F2FdC318",
+      abi: [
+        {
+          inputs: [
+            {
+              internalType: "contract IVerifier",
+              name: "_voteVerifier",
+              type: "address",
+            },
+            {
+              internalType: "contract IVerifier",
+              name: "_tallyVerifier",
+              type: "address",
+            },
+          ],
+          stateMutability: "nonpayable",
+          type: "constructor",
+        },
+        {
+          anonymous: false,
+          inputs: [
+            {
+              indexed: false,
+              internalType: "uint256",
+              name: "proposalId",
+              type: "uint256",
+            },
+            {
+              indexed: false,
+              internalType: "string",
+              name: "description",
+              type: "string",
+            },
+          ],
+          name: "ProposalCreated",
+          type: "event",
+        },
+        {
+          anonymous: false,
+          inputs: [
+            {
+              indexed: false,
+              internalType: "uint256",
+              name: "proposalId",
+              type: "uint256",
+            },
+          ],
+          name: "TallyPublished",
+          type: "event",
+        },
+        {
+          anonymous: false,
+          inputs: [
+            {
+              indexed: false,
+              internalType: "uint256",
+              name: "proposalId",
+              type: "uint256",
+            },
+            {
+              indexed: false,
+              internalType: "address",
+              name: "voter",
+              type: "address",
+            },
+            {
+              components: [
+                {
+                  internalType: "bytes",
+                  name: "U",
+                  type: "bytes",
+                },
+                {
+                  internalType: "bytes",
+                  name: "V",
+                  type: "bytes",
+                },
+                {
+                  internalType: "bytes",
+                  name: "W",
+                  type: "bytes",
+                },
+              ],
+              indexed: false,
+              internalType: "struct ISecretBallot.Ciphertext",
+              name: "vote",
+              type: "tuple",
+            },
+          ],
+          name: "VoteCast",
+          type: "event",
+        },
+        {
+          inputs: [
+            {
+              internalType: "uint256",
+              name: "proposalId",
+              type: "uint256",
+            },
+            {
+              internalType: "address",
+              name: "voter",
+              type: "address",
+            },
+            {
+              components: [
+                {
+                  internalType: "bytes",
+                  name: "U",
+                  type: "bytes",
+                },
+                {
+                  internalType: "bytes",
+                  name: "V",
+                  type: "bytes",
+                },
+                {
+                  internalType: "bytes",
+                  name: "W",
+                  type: "bytes",
+                },
+              ],
+              internalType: "struct ISecretBallot.Ciphertext",
+              name: "vote",
+              type: "tuple",
+            },
+            {
+              internalType: "bytes",
+              name: "proof",
+              type: "bytes",
+            },
+            {
+              internalType: "bytes32",
+              name: "new_commitment",
+              type: "bytes32",
+            },
+          ],
+          name: "castVote",
+          outputs: [
+            {
+              internalType: "bool",
+              name: "",
+              type: "bool",
+            },
+          ],
+          stateMutability: "nonpayable",
+          type: "function",
+        },
+        {
+          inputs: [
+            {
+              internalType: "string",
+              name: "description",
+              type: "string",
+            },
+            {
+              internalType: "uint256",
+              name: "votingStart",
+              type: "uint256",
+            },
+            {
+              internalType: "uint256",
+              name: "votingEnd",
+              type: "uint256",
+            },
+          ],
+          name: "createProposal",
+          outputs: [
+            {
+              internalType: "uint256",
+              name: "",
+              type: "uint256",
+            },
+          ],
+          stateMutability: "nonpayable",
+          type: "function",
+        },
+        {
+          inputs: [
+            {
+              internalType: "uint256",
+              name: "proposalId",
+              type: "uint256",
+            },
+          ],
+          name: "getFinalCommitmentHash",
+          outputs: [
+            {
+              internalType: "bytes32",
+              name: "",
+              type: "bytes32",
+            },
+          ],
+          stateMutability: "view",
+          type: "function",
+        },
+        {
+          inputs: [
+            {
+              internalType: "uint256",
+              name: "proposalId",
+              type: "uint256",
+            },
+          ],
+          name: "getProposal",
+          outputs: [
+            {
+              components: [
+                {
+                  internalType: "uint256",
+                  name: "id",
+                  type: "uint256",
+                },
+                {
+                  internalType: "string",
+                  name: "description",
+                  type: "string",
+                },
+                {
+                  internalType: "uint256",
+                  name: "votingStart",
+                  type: "uint256",
+                },
+                {
+                  internalType: "uint256",
+                  name: "votingEnd",
+                  type: "uint256",
+                },
+                {
+                  internalType: "uint256",
+                  name: "yesVotes",
+                  type: "uint256",
+                },
+                {
+                  internalType: "uint256",
+                  name: "noVotes",
+                  type: "uint256",
+                },
+                {
+                  internalType: "bool",
+                  name: "isActive",
+                  type: "bool",
+                },
+              ],
+              internalType: "struct ISecretBallot.Proposal",
+              name: "",
+              type: "tuple",
+            },
+          ],
+          stateMutability: "view",
+          type: "function",
+        },
+        {
+          inputs: [
+            {
+              internalType: "bytes32",
+              name: "descriptionHash",
+              type: "bytes32",
+            },
+            {
+              internalType: "uint256",
+              name: "round",
+              type: "uint256",
+            },
+          ],
+          name: "getProposalId",
+          outputs: [
+            {
+              internalType: "uint256",
+              name: "",
+              type: "uint256",
+            },
+          ],
+          stateMutability: "pure",
+          type: "function",
+        },
+        {
+          inputs: [
+            {
+              internalType: "uint256",
+              name: "proposalId",
+              type: "uint256",
+            },
+          ],
+          name: "getVoterCount",
+          outputs: [
+            {
+              internalType: "uint256",
+              name: "",
+              type: "uint256",
+            },
+          ],
+          stateMutability: "view",
+          type: "function",
+        },
+        {
+          inputs: [],
+          name: "owner",
+          outputs: [
+            {
+              internalType: "address",
+              name: "",
+              type: "address",
+            },
+          ],
+          stateMutability: "view",
+          type: "function",
+        },
+        {
+          inputs: [],
+          name: "proposalCounter",
+          outputs: [
+            {
+              internalType: "uint256",
+              name: "",
+              type: "uint256",
+            },
+          ],
+          stateMutability: "view",
+          type: "function",
+        },
+        {
+          inputs: [
+            {
+              internalType: "uint256",
+              name: "proposalId",
+              type: "uint256",
+            },
+            {
+              internalType: "bytes",
+              name: "proof",
+              type: "bytes",
+            },
+            {
+              internalType: "bytes32",
+              name: "final_commitment",
+              type: "bytes32",
+            },
+            {
+              internalType: "uint32",
+              name: "total_yes",
+              type: "uint32",
+            },
+          ],
+          name: "publishTally",
+          outputs: [
+            {
+              internalType: "bool",
+              name: "",
+              type: "bool",
+            },
+          ],
+          stateMutability: "nonpayable",
+          type: "function",
+        },
+        {
+          inputs: [],
+          name: "tallyVerifier",
+          outputs: [
+            {
+              internalType: "contract IVerifier",
+              name: "",
+              type: "address",
+            },
+          ],
+          stateMutability: "view",
+          type: "function",
+        },
+        {
+          inputs: [
+            {
+              internalType: "address",
+              name: "newOwner",
+              type: "address",
+            },
+          ],
+          name: "updateAdmin",
+          outputs: [],
+          stateMutability: "nonpayable",
+          type: "function",
+        },
+        {
+          inputs: [],
+          name: "voteVerifier",
+          outputs: [
+            {
+              internalType: "contract IVerifier",
+              name: "",
+              type: "address",
+            },
+          ],
+          stateMutability: "view",
+          type: "function",
+        },
+      ],
+      inheritedFunctions: {
+        castVote: "contracts/ISecretBallot.sol",
+        createProposal: "contracts/ISecretBallot.sol",
+        getFinalCommitmentHash: "contracts/ISecretBallot.sol",
+        getProposal: "contracts/ISecretBallot.sol",
+        getProposalId: "contracts/ISecretBallot.sol",
+        getVoterCount: "contracts/ISecretBallot.sol",
+        publishTally: "contracts/ISecretBallot.sol",
+      },
+    },
     TallyUltraVerifier: {
-      address: "0x9fE46736679d2D9a65F0992F2272dE9f3c7fa6e0",
+      address: "0x2279B7A0a67DB372996a5FaB50D91eAA73d2eBe6",
       abi: [
         {
           inputs: [],
@@ -105,8 +556,8 @@ const deployedContracts = {
       ],
       inheritedFunctions: {},
     },
-    VoteUltraVerifier: {
-      address: "0x5FbDB2315678afecb367f032d93F642f64180aa3",
+    UltraVerifier: {
+      address: "0x0165878A594ca255338adfa4d48449f69242Eb8F",
       abi: [
         {
           inputs: [],
@@ -200,6 +651,278 @@ const deployedContracts = {
           ],
           stateMutability: "view",
           type: "function",
+        },
+      ],
+      inheritedFunctions: {},
+    },
+    VoteCipher: {
+      address: "0xe7f1725E7734CE288F8367e1Bb143E90bb3F0512",
+      abi: [
+        {
+          inputs: [
+            {
+              internalType: "uint256",
+              name: "",
+              type: "uint256",
+            },
+          ],
+          name: "ciphers",
+          outputs: [
+            {
+              internalType: "bytes16",
+              name: "V",
+              type: "bytes16",
+            },
+            {
+              internalType: "bytes16",
+              name: "W",
+              type: "bytes16",
+            },
+          ],
+          stateMutability: "view",
+          type: "function",
+        },
+      ],
+      inheritedFunctions: {},
+    },
+    VoteUltraVerifier: {
+      address: "0xa513E6E4b8f2a923D98304ec87F64353C4D5C853",
+      abi: [
+        {
+          inputs: [],
+          name: "INVALID_VERIFICATION_KEY",
+          type: "error",
+        },
+        {
+          inputs: [],
+          name: "MOD_EXP_FAILURE",
+          type: "error",
+        },
+        {
+          inputs: [],
+          name: "OPENING_COMMITMENT_FAILED",
+          type: "error",
+        },
+        {
+          inputs: [],
+          name: "PAIRING_FAILED",
+          type: "error",
+        },
+        {
+          inputs: [],
+          name: "PAIRING_PREAMBLE_FAILED",
+          type: "error",
+        },
+        {
+          inputs: [],
+          name: "POINT_NOT_ON_CURVE",
+          type: "error",
+        },
+        {
+          inputs: [
+            {
+              internalType: "uint256",
+              name: "expected",
+              type: "uint256",
+            },
+            {
+              internalType: "uint256",
+              name: "actual",
+              type: "uint256",
+            },
+          ],
+          name: "PUBLIC_INPUT_COUNT_INVALID",
+          type: "error",
+        },
+        {
+          inputs: [],
+          name: "PUBLIC_INPUT_GE_P",
+          type: "error",
+        },
+        {
+          inputs: [],
+          name: "PUBLIC_INPUT_INVALID_BN128_G1_POINT",
+          type: "error",
+        },
+        {
+          inputs: [],
+          name: "getVerificationKeyHash",
+          outputs: [
+            {
+              internalType: "bytes32",
+              name: "",
+              type: "bytes32",
+            },
+          ],
+          stateMutability: "pure",
+          type: "function",
+        },
+        {
+          inputs: [
+            {
+              internalType: "bytes",
+              name: "_proof",
+              type: "bytes",
+            },
+            {
+              internalType: "bytes32[]",
+              name: "_publicInputs",
+              type: "bytes32[]",
+            },
+          ],
+          name: "verify",
+          outputs: [
+            {
+              internalType: "bool",
+              name: "",
+              type: "bool",
+            },
+          ],
+          stateMutability: "view",
+          type: "function",
+        },
+      ],
+      inheritedFunctions: {},
+    },
+    YourContract: {
+      address: "0x5FbDB2315678afecb367f032d93F642f64180aa3",
+      abi: [
+        {
+          inputs: [
+            {
+              internalType: "address",
+              name: "_owner",
+              type: "address",
+            },
+          ],
+          stateMutability: "nonpayable",
+          type: "constructor",
+        },
+        {
+          anonymous: false,
+          inputs: [
+            {
+              indexed: true,
+              internalType: "address",
+              name: "greetingSetter",
+              type: "address",
+            },
+            {
+              indexed: false,
+              internalType: "string",
+              name: "newGreeting",
+              type: "string",
+            },
+            {
+              indexed: false,
+              internalType: "bool",
+              name: "premium",
+              type: "bool",
+            },
+            {
+              indexed: false,
+              internalType: "uint256",
+              name: "value",
+              type: "uint256",
+            },
+          ],
+          name: "GreetingChange",
+          type: "event",
+        },
+        {
+          inputs: [],
+          name: "greeting",
+          outputs: [
+            {
+              internalType: "string",
+              name: "",
+              type: "string",
+            },
+          ],
+          stateMutability: "view",
+          type: "function",
+        },
+        {
+          inputs: [],
+          name: "owner",
+          outputs: [
+            {
+              internalType: "address",
+              name: "",
+              type: "address",
+            },
+          ],
+          stateMutability: "view",
+          type: "function",
+        },
+        {
+          inputs: [],
+          name: "premium",
+          outputs: [
+            {
+              internalType: "bool",
+              name: "",
+              type: "bool",
+            },
+          ],
+          stateMutability: "view",
+          type: "function",
+        },
+        {
+          inputs: [
+            {
+              internalType: "string",
+              name: "_newGreeting",
+              type: "string",
+            },
+          ],
+          name: "setGreeting",
+          outputs: [],
+          stateMutability: "payable",
+          type: "function",
+        },
+        {
+          inputs: [],
+          name: "totalCounter",
+          outputs: [
+            {
+              internalType: "uint256",
+              name: "",
+              type: "uint256",
+            },
+          ],
+          stateMutability: "view",
+          type: "function",
+        },
+        {
+          inputs: [
+            {
+              internalType: "address",
+              name: "",
+              type: "address",
+            },
+          ],
+          name: "userGreetingCounter",
+          outputs: [
+            {
+              internalType: "uint256",
+              name: "",
+              type: "uint256",
+            },
+          ],
+          stateMutability: "view",
+          type: "function",
+        },
+        {
+          inputs: [],
+          name: "withdraw",
+          outputs: [],
+          stateMutability: "nonpayable",
+          type: "function",
+        },
+        {
+          stateMutability: "payable",
+          type: "receive",
         },
       ],
       inheritedFunctions: {},
