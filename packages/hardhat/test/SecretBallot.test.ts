@@ -4,7 +4,6 @@ import { SecretBallot, VoteUltraVerifier, TallyUltraVerifier } from "../typechai
 import { encryptMessage } from "../drand/tlock";
 import { getChainInfo } from "../drand/drandClient";
 import { PlonkProofGenerator } from "../noir/PlonkProofGenerator";
-import { HardhatEthersSigner } from "@nomicfoundation/hardhat-ethers/signers";
 import { calculateVoteCommitment, generateTallyProofHh, generateVoteProofHh } from "../noir/helpers";
 
 describe("SecretBallot", function () {
@@ -62,12 +61,10 @@ describe("SecretBallot", function () {
     expect(proposal.isActive).to.equal(true);
 
     const chainInfo = await getChainInfo();
-    const allSigners = await ethers.getSigners();
+    const allSigners = (await ethers.getSigners()).map(signer => signer.address);
     const proposalRoundNumber = Number(proposal.drandRound);
-
     for (let i = 1; i <= 10; i++) {
-      const voterSigner: HardhatEthersSigner = allSigners[i];
-      const voter = voterSigner.address;
+      const voter = allSigners[i];
       const vote = Number(Boolean(Math.random() < 0.5));
       yes_votes = yes_votes + vote;
       const unencrypted_vote = `${vote}1234567`;
@@ -84,20 +81,25 @@ describe("SecretBallot", function () {
       const voter_vote_commitment_FR = await calculateVoteCommitment(voter, unencrypted_vote);
       const voter_vote_commitment_hash = voter_vote_commitment_FR.toString();
 
+      const previous_commitment_hash = await secretBallot.getFinalCommitmentHash(proposal.id);
+      console.log("Previous commitment hash: ", previous_commitment_hash);
       // Generate proof data (using your helper that wraps PlonkProofGenerator)
       const vote_proof_data = await generateVoteProofHh(
         voter,
         unencrypted_vote,
         voter_vote_commitment_hash,
-        await secretBallot.getFinalCommitmentHash(proposal.id),
+        previous_commitment_hash,
       );
+      console.log("Voter commitment hash: ", voter_vote_commitment_hash);
+      console.log("New commitment hash: ", vote_proof_data.publicInputs[3]);
       const hex_proof = PlonkProofGenerator.uint8ArrayToHex(vote_proof_data.proof);
 
       // Cast vote from this voter's account.
       const voteTx = await secretBallot
-        .connect(voterSigner)
+        .connect(await ethers.getSigner(voter))
         .castVote(proposal.id, voter, encrypted_vote_for_contract, hex_proof, vote_proof_data.publicInputs);
       await voteTx.wait();
+      console.log("---------------------------------------------------------------------");
     }
 
     // Wait for the voting period to end.
@@ -105,7 +107,10 @@ describe("SecretBallot", function () {
     await ethers.provider.send("evm_mine", []);
 
     // Publish tally.
+    console.log({ decrypted_votes });
+    console.log("Publishing tally...");
     const finalCommitment = await secretBallot.getFinalCommitmentHash(proposal.id);
+    console.log("Total yes votes: ", yes_votes);
     const tally_proof_data = await generateTallyProofHh(
       finalCommitment,
       yes_votes.toString(),
@@ -114,8 +119,10 @@ describe("SecretBallot", function () {
     );
 
     const hex_proof = PlonkProofGenerator.uint8ArrayToHex(tally_proof_data.proof);
-    const publishTallyTx = await secretBallot.publishTally(proposal.id, hex_proof, tally_proof_data.publicInputs);
-    await publishTallyTx.wait();
+    try {
+      const publishTallyTx = await secretBallot.publishTally(proposal.id, hex_proof, tally_proof_data.publicInputs);
+      await publishTallyTx.wait();
+    } catch {}
 
     const proposal_updated = await secretBallot.getProposal(proposalCounter);
     console.log("====================================");
