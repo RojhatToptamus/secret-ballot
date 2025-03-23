@@ -53,6 +53,10 @@ contract SecretBallot is ISecretBallot {
     return proposalCounter;
   }
 
+  function updateAdmin(address newOwner) external onlyOwner {
+    owner = newOwner;
+  }
+
   function getProposal(uint256 proposalId) external view override returns (Proposal memory) {
     return proposals[proposalId];
   }
