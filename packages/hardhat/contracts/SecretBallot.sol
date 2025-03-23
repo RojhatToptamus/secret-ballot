@@ -74,19 +74,23 @@ contract SecretBallot is ISecretBallot {
     address voter,
     Ciphertext calldata vote,
     bytes calldata proof,
-    bytes32 new_commitment
+    bytes32 vote_commitment,
+    bytes32 final_votes_commitment
   ) external override returns (bool) {
     Proposal storage proposal = proposals[proposalId];
 
     require(proposal.isActive, "Proposal inactive");
     require(block.timestamp >= proposal.votingStart && block.timestamp <= proposal.votingEnd, "Voting closed");
 
-    bytes32[] memory publicInputs = new bytes32[](2);
+    bytes32[] memory publicInputs = new bytes32[](4);
     publicInputs[0] = keccak256(abi.encodePacked(voter));
-    publicInputs[1] = new_commitment;
+    publicInputs[1] = vote_commitment;
+    publicInputs[2] = finalCommitmentHashes[proposalId];
+    publicInputs[3] = final_votes_commitment;
 
     require(voteVerifier.verify(proof, publicInputs), "Invalid vote proof");
 
+    finalCommitmentHashes[proposalId] = final_votes_commitment;
     proposalVotes[proposalId].push(vote);
     voterCounts[proposalId]++;
     emit VoteCast(proposalId, voter, vote);

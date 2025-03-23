@@ -31,7 +31,8 @@ interface ISecretBallot {
     address voter, 
     Ciphertext calldata vote, 
     bytes calldata proof,
-    bytes32 new_commitment
+    bytes32 new_commitment,
+    bytes32 final_votes_commitment
   ) external returns (bool);
 
   function publishTally(
