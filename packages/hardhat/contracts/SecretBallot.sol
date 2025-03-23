@@ -116,11 +116,4 @@ contract SecretBallot is ISecretBallot {
     emit TallyPublished(proposalId);
     return true;
   }
-
-  function getProposalId(
-    bytes32 descriptionHash,
-    uint256 round
-  ) external pure override returns (uint256) {
-    return uint256(keccak256(abi.encodePacked(descriptionHash, round)));
-  }
 }

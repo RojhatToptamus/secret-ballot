@@ -40,9 +40,4 @@ interface ISecretBallot {
     bytes32 final_commitment,
     uint32 total_yes
   ) external returns (bool);
-   
-  function getProposalId(
-    bytes32 descriptionHash,
-    uint256 round
-  ) external pure returns (uint256);
 }
