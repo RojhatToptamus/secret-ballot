@@ -556,8 +556,8 @@ const deployedContracts = {
       ],
       inheritedFunctions: {},
     },
-    UltraVerifier: {
-      address: "0x0165878A594ca255338adfa4d48449f69242Eb8F",
+    VoteUltraVerifier: {
+      address: "0xCf7Ed3AccA5a467e9e704C703E8D87F634fB0Fc9",
       abi: [
         {
           inputs: [],
@@ -677,105 +677,6 @@ const deployedContracts = {
               internalType: "bytes16",
               name: "W",
               type: "bytes16",
-            },
-          ],
-          stateMutability: "view",
-          type: "function",
-        },
-      ],
-      inheritedFunctions: {},
-    },
-    VoteUltraVerifier: {
-      address: "0xa513E6E4b8f2a923D98304ec87F64353C4D5C853",
-      abi: [
-        {
-          inputs: [],
-          name: "INVALID_VERIFICATION_KEY",
-          type: "error",
-        },
-        {
-          inputs: [],
-          name: "MOD_EXP_FAILURE",
-          type: "error",
-        },
-        {
-          inputs: [],
-          name: "OPENING_COMMITMENT_FAILED",
-          type: "error",
-        },
-        {
-          inputs: [],
-          name: "PAIRING_FAILED",
-          type: "error",
-        },
-        {
-          inputs: [],
-          name: "PAIRING_PREAMBLE_FAILED",
-          type: "error",
-        },
-        {
-          inputs: [],
-          name: "POINT_NOT_ON_CURVE",
-          type: "error",
-        },
-        {
-          inputs: [
-            {
-              internalType: "uint256",
-              name: "expected",
-              type: "uint256",
-            },
-            {
-              internalType: "uint256",
-              name: "actual",
-              type: "uint256",
-            },
-          ],
-          name: "PUBLIC_INPUT_COUNT_INVALID",
-          type: "error",
-        },
-        {
-          inputs: [],
-          name: "PUBLIC_INPUT_GE_P",
-          type: "error",
-        },
-        {
-          inputs: [],
-          name: "PUBLIC_INPUT_INVALID_BN128_G1_POINT",
-          type: "error",
-        },
-        {
-          inputs: [],
-          name: "getVerificationKeyHash",
-          outputs: [
-            {
-              internalType: "bytes32",
-              name: "",
-              type: "bytes32",
-            },
-          ],
-          stateMutability: "pure",
-          type: "function",
-        },
-        {
-          inputs: [
-            {
-              internalType: "bytes",
-              name: "_proof",
-              type: "bytes",
-            },
-            {
-              internalType: "bytes32[]",
-              name: "_publicInputs",
-              type: "bytes32[]",
-            },
-          ],
-          name: "verify",
-          outputs: [
-            {
-              internalType: "bool",
-              name: "",
-              type: "bool",
             },
           ],
           stateMutability: "view",
