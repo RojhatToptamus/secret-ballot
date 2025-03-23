@@ -6,6 +6,105 @@ import { GenericContractsDeclaration } from "~~/utils/scaffold-eth/contract";
 
 const deployedContracts = {
   31337: {
+    TallyUltraVerifier: {
+      address: "0x9fE46736679d2D9a65F0992F2272dE9f3c7fa6e0",
+      abi: [
+        {
+          inputs: [],
+          name: "INVALID_VERIFICATION_KEY",
+          type: "error",
+        },
+        {
+          inputs: [],
+          name: "MOD_EXP_FAILURE",
+          type: "error",
+        },
+        {
+          inputs: [],
+          name: "OPENING_COMMITMENT_FAILED",
+          type: "error",
+        },
+        {
+          inputs: [],
+          name: "PAIRING_FAILED",
+          type: "error",
+        },
+        {
+          inputs: [],
+          name: "PAIRING_PREAMBLE_FAILED",
+          type: "error",
+        },
+        {
+          inputs: [],
+          name: "POINT_NOT_ON_CURVE",
+          type: "error",
+        },
+        {
+          inputs: [
+            {
+              internalType: "uint256",
+              name: "expected",
+              type: "uint256",
+            },
+            {
+              internalType: "uint256",
+              name: "actual",
+              type: "uint256",
+            },
+          ],
+          name: "PUBLIC_INPUT_COUNT_INVALID",
+          type: "error",
+        },
+        {
+          inputs: [],
+          name: "PUBLIC_INPUT_GE_P",
+          type: "error",
+        },
+        {
+          inputs: [],
+          name: "PUBLIC_INPUT_INVALID_BN128_G1_POINT",
+          type: "error",
+        },
+        {
+          inputs: [],
+          name: "getVerificationKeyHash",
+          outputs: [
+            {
+              internalType: "bytes32",
+              name: "",
+              type: "bytes32",
+            },
+          ],
+          stateMutability: "pure",
+          type: "function",
+        },
+        {
+          inputs: [
+            {
+              internalType: "bytes",
+              name: "_proof",
+              type: "bytes",
+            },
+            {
+              internalType: "bytes32[]",
+              name: "_publicInputs",
+              type: "bytes32[]",
+            },
+          ],
+          name: "verify",
+          outputs: [
+            {
+              internalType: "bool",
+              name: "",
+              type: "bool",
+            },
+          ],
+          stateMutability: "view",
+          type: "function",
+        },
+      ],
+      inheritedFunctions: {},
+    },
     VoteUltraVerifier: {
       address: "0x5FbDB2315678afecb367f032d93F642f64180aa3",
       abi: [
