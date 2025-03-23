@@ -95,16 +95,20 @@ contract SecretBallot is ISecretBallot {
 
   function publishTally(
     uint256 proposalId,
-    bytes calldata fullProofWithHints
+    bytes calldata proof, 
+    bytes32 final_commitment,
+    uint32 total_yes
   ) external override returns (bool) {
     Proposal storage proposal = proposals[proposalId];
     require(proposal.isActive, "Proposal inactive");
     require(block.timestamp > proposal.votingEnd, "Voting still open");
 
-    // TODO: Verify zero-knowledge proof and tally votes securely
+    bytes32[] memory publicInputs = new bytes32[](2);
+    publicInputs[0] = keccak256(abi.encodePacked(total_yes));
+    publicInputs[0] = final_commitment;
+    require(tallyVerifier.verify(proof, publicInputs), "Invalid vote proof");
 
-    // Simulated tally for example purposes
-    proposal.yesVotes = voterCounts[proposalId] / 2;
+    proposal.yesVotes = total_yes;
     proposal.noVotes = voterCounts[proposalId] - proposal.yesVotes;
 
     proposal.isActive = false;

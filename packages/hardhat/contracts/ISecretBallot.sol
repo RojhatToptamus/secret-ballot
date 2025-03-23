@@ -36,7 +36,9 @@ interface ISecretBallot {
 
   function publishTally(
     uint256 proposalId, 
-    bytes calldata fullProofWithHints
+    bytes calldata fullProofWithHints,
+    bytes32 final_commitment,
+    uint32 total_yes
   ) external returns (bool);
    
   function getProposalId(
