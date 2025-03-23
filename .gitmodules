@@ -1,0 +1,3 @@
+[submodule "secret-ballot-circuits"]
+	path = secret-ballot-circuits
+	url = https://github.com/RojhatToptamus/secret-ballot-circuits
