@@ -5,7 +5,7 @@ import { encryptMessage } from "../drand/tlock";
 import { getChainInfo } from "../drand/drandClient";
 import { PlonkProofGenerator } from "../noir/PlonkProofGenerator";
 import { HardhatEthersSigner } from "@nomicfoundation/hardhat-ethers/signers";
-import { calculateVoteCommitment } from "../noir/helpers";
+import { calculateVoteCommitment, generateVoteProofHh } from "../noir/helpers";
 
 describe("SecretBallot", function () {
   let secretBallot: SecretBallot;
@@ -61,7 +61,7 @@ describe("SecretBallot", function () {
     const proposalRoundNumber = proposal.drandRound;
     const chainInfo = await getChainInfo();
 
-    // let current_commitments_hash = await secretBallot.getFinalCommitmentHash(proposal.id);
+    const current_commitments_hash = await secretBallot.getFinalCommitmentHash(proposal.id);
 
     // Voting with default user or Dployer
     const unencrypted_vote = "01234567";
@@ -76,7 +76,12 @@ describe("SecretBallot", function () {
     const voter_vote_commitemt_FR = await calculateVoteCommitment(deployer.address, unencrypted_vote);
     const voter_vote_commitemt_hash = voter_vote_commitemt_FR.toString();
     console.log({ voter_vote_commitemt_hash });
-    // let vote_proof = generateVoteProof(deployer.address, unencrypted_vote, voter_vote_commitemt_hash, current_commitments_hash)
-    // console.log({vote_proof})
+    const vote_proof = await generateVoteProofHh(
+      deployer.address,
+      unencrypted_vote,
+      voter_vote_commitemt_hash,
+      current_commitments_hash,
+    );
+    console.log({ vote_proof });
   });
 });

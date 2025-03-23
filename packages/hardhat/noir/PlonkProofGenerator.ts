@@ -36,7 +36,7 @@ export class PlonkProofGenerator {
   }
 
   async initializeCircuit(circuitName: string, vkPath: string): Promise<void> {
-    const projectPath = path.resolve(path.join(process.cwd(), "secret-ballot-circuits", "circuits", circuitName));
+    const projectPath = path.dirname(vkPath);
     console.log(`Resolving circuit at: ${projectPath}`);
 
     const compilation = await this.compileCircuit(projectPath);
