@@ -12,12 +12,12 @@ async function main() {
   const endTime = await input({ message: "Enter voting start time (Unix timestamp):", required: true });
 
   // Get the deployer's signer.
-  const [deployer] = await ethers.getSigners();
-  console.log("Deployer address:", deployer.address);
+  // const [deployer] = await ethers.getSigners();
+  // console.log("Deployer address:", deployer.address);
 
   // Retrieve the deployed SecretBallot contract.
   const secretBallotDeployment = await deployments.get("SecretBallot");
-  const secretBallot = await ethers.getContractAt("SecretBallot", secretBallotDeployment.address, deployer);
+  const secretBallot = await ethers.getContractAt("SecretBallot", secretBallotDeployment.address);
 
   // Read the current proposalCounter value.
   const initialCounter = await secretBallot.proposalCounter();
@@ -54,9 +54,9 @@ async function main() {
   // Determine the current status of the proposal.
   const now = Math.floor(Date.now() / 1000);
   let status = "";
-  if (now < votingStartUnix) {
+  if (now < Number(votingStartUnix)) {
     status = "Not started yet";
-  } else if (now >= votingStartUnix && now <= votingEndUnix) {
+  } else if (now >= Number(votingStartUnix) && now <= votingEndUnix) {
     status = "Open for voting";
   } else {
     status = "Voting closed";

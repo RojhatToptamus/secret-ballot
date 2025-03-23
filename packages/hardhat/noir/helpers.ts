@@ -3,6 +3,98 @@ import { ProofData } from "@noir-lang/types";
 import { PlonkProofGenerator } from "./PlonkProofGenerator";
 
 /**
+ * Generates a proof for the tally verifier circuit
+ * @param finalCommitment The final commitment hash
+ * @param yesVotes The number of yes votes
+ * @param userAddresses Array of user addresses
+ * @param plainVotes Array of plain votes
+ * @returns The generated proof data
+ */
+export async function generateTallyProof(
+  finalCommitment: string,
+  yesVotes: string,
+  userAddresses: string[],
+  plainVotes: string[],
+): Promise<ProofData> {
+  const projectRoot = path.resolve(__dirname, "../..");
+
+  // Initialize the proof generator
+  const proofGenerator = new PlonkProofGenerator();
+
+  // Initialize the circuit
+  await proofGenerator.initializeCircuit(
+    "tally_verifier",
+    path.join(projectRoot, "secret-ballot-circuits/circuits/tally_verifier/vk.bin"),
+  );
+
+  // Pad arrays to the required length (100)
+  const paddedUserAddresses = [...userAddresses];
+  const paddedPlainVotes = [...plainVotes];
+
+  while (paddedUserAddresses.length < 100) {
+    paddedUserAddresses.push("0");
+  }
+
+  while (paddedPlainVotes.length < 100) {
+    paddedPlainVotes.push("00000000");
+  }
+
+  // Generate the proof
+  return await proofGenerator.generateProof("tally_verifier", {
+    final_commitment: finalCommitment,
+    yes_votes: yesVotes,
+    user_addresses: paddedUserAddresses,
+    plain_votes: paddedPlainVotes,
+  });
+}
+
+/**
+ * Generates a proof for the tally verifier circuit ( Specifically for hardhat test, as path is different when hh task runs it)
+ * @param finalCommitment The final commitment hash
+ * @param yesVotes The number of yes votes
+ * @param userAddresses Array of user addresses
+ * @param plainVotes Array of plain votes
+ * @returns The generated proof data
+ */
+export async function generateTallyProofHh(
+  finalCommitment: string,
+  yesVotes: string,
+  userAddresses: string[],
+  plainVotes: string[],
+): Promise<ProofData> {
+  const projectRoot = path.resolve(__dirname, "../../..");
+
+  // Initialize the proof generator
+  const proofGenerator = new PlonkProofGenerator();
+
+  // Initialize the circuit
+  await proofGenerator.initializeCircuit(
+    "tally_verifier",
+    path.join(projectRoot, "secret-ballot-circuits/circuits/tally_verifier/vk.bin"),
+  );
+
+  // Pad arrays to the required length (100)
+  const paddedUserAddresses = [...userAddresses];
+  const paddedPlainVotes = [...plainVotes];
+
+  while (paddedUserAddresses.length < 100) {
+    paddedUserAddresses.push("0");
+  }
+
+  while (paddedPlainVotes.length < 100) {
+    paddedPlainVotes.push("00000000");
+  }
+
+  // Generate the proof
+  return await proofGenerator.generateProof("tally_verifier", {
+    final_commitment: finalCommitment,
+    yes_votes: yesVotes,
+    user_addresses: paddedUserAddresses,
+    plain_votes: paddedPlainVotes,
+  });
+}
+
+/**
  * Calculates the commitment hash using poseidon2
  * @param voterAddressStr The voter's address as a string
  * @param voteString The vote string

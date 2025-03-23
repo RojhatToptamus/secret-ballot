@@ -27,21 +27,17 @@ interface ISecretBallot {
    
   function getFinalCommitmentHash(uint256 proposalId) external view returns (bytes32);
 
-  function timestamp_to_round(uint64 timestamp) external view returns (uint64);
-   
   function castVote(
     uint256 proposalId, 
     address voter, 
     Ciphertext calldata vote, 
     bytes calldata proof,
-    bytes32 new_commitment,
-    bytes32 final_votes_commitment
+    bytes32[] calldata publicInputs
   ) external returns (bool);
 
   function publishTally(
     uint256 proposalId, 
     bytes calldata fullProofWithHints,
-    bytes32 final_commitment,
-    uint32 total_yes
+    bytes32[] calldata publicInputs
   ) external returns (bool);
 }

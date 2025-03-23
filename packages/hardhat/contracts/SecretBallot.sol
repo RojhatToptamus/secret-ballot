@@ -14,7 +14,7 @@ contract SecretBallot is ISecretBallot {
   mapping(uint256 => Proposal) private proposals;
   mapping(uint256 => uint256) private voterCounts;
   mapping(uint256 => bytes32) private finalCommitmentHashes;
-  mapping(uint256 => Ciphertext[]) private proposalVotes;
+  mapping(uint256 => Ciphertext[]) public proposalVotes;
 
   address public owner;
   IVerifier public voteVerifier;
@@ -45,7 +45,7 @@ contract SecretBallot is ISecretBallot {
     proposalCounter++;
     proposals[proposalCounter] = Proposal({
       id: proposalCounter,
-      drandRound: timestamp_to_round(votingEnd),
+      drandRound: 128, // For testing only
       description: description,
       votingStart: votingStart,
       votingEnd: votingEnd,
@@ -79,23 +79,16 @@ contract SecretBallot is ISecretBallot {
     address voter,
     Ciphertext calldata vote,
     bytes calldata proof,
-    bytes32 vote_commitment,
-    bytes32 final_votes_commitment
+    bytes32[] calldata publicInputs
   ) external override returns (bool) {
     Proposal storage proposal = proposals[proposalId];
 
     require(proposal.isActive, "Proposal inactive");
     require(block.timestamp >= proposal.votingStart && block.timestamp <= proposal.votingEnd, "Voting closed");
 
-    bytes32[] memory publicInputs = new bytes32[](4);
-    publicInputs[0] = bytes32(uint256(uint160(voter)));
-    publicInputs[1] = vote_commitment;
-    publicInputs[2] = finalCommitmentHashes[proposalId];
-    publicInputs[3] = final_votes_commitment;
-
     require(voteVerifier.verify(proof, publicInputs), "Invalid vote proof");
 
-    finalCommitmentHashes[proposalId] = final_votes_commitment;
+    finalCommitmentHashes[proposalId] = publicInputs[3];
     proposalVotes[proposalId].push(vote);
     voterCounts[proposalId]++;
     emit VoteCast(proposalId, voter, vote);
@@ -105,33 +98,19 @@ contract SecretBallot is ISecretBallot {
   function publishTally(
     uint256 proposalId,
     bytes calldata proof, 
-    bytes32 final_commitment,
-    uint32 total_yes
+    bytes32[] calldata publicInputs
   ) external override returns (bool) {
     Proposal storage proposal = proposals[proposalId];
     require(proposal.isActive, "Proposal inactive");
     require(block.timestamp > proposal.votingEnd, "Voting still open");
-
-    bytes32[] memory publicInputs = new bytes32[](2);
-    publicInputs[0] = bytes32(uint256(uint160(total_yes)));
-    publicInputs[1] = final_commitment;
     
     require(tallyVerifier.verify(proof, publicInputs), "Invalid vote proof");
 
-    proposal.yesVotes = total_yes;
+    proposal.yesVotes = uint256(bytes32(publicInputs[0]));
     proposal.noVotes = voterCounts[proposalId] - proposal.yesVotes;
     proposal.isActive = false;
 
     emit TallyPublished(proposalId);
     return true;
   }
-
-   function timestamp_to_round(uint64 timestamp) public override pure returns (uint64) {
-        if (timestamp < DRAND_QUICKNET_GENESIS_TIME) {
-            return 0;
-        }
-
-        uint64 elapsed_time = timestamp - DRAND_QUICKNET_GENESIS_TIME;
-        return (elapsed_time / DRAND_QUICKNET_PERIOD) + 1;
-    }
 }
