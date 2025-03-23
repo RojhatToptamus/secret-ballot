@@ -96,7 +96,7 @@ contract SecretBallot is ISecretBallot {
   function publishTally(
     uint256 proposalId,
     bytes calldata fullProofWithHints
-  ) external override onlyOwner returns (bool) {
+  ) external override returns (bool) {
     Proposal storage proposal = proposals[proposalId];
     require(proposal.isActive, "Proposal inactive");
     require(block.timestamp > proposal.votingEnd, "Voting still open");
