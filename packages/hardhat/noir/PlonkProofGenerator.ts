@@ -72,7 +72,7 @@ export class PlonkProofGenerator {
     return proofObject;
   }
 
-  public uint8ArrayToHex(buffer: Uint8Array): string {
+  public static uint8ArrayToHex(buffer: Uint8Array): string {
     const hex: string[] = [];
 
     buffer.forEach(function (i) {
@@ -86,7 +86,7 @@ export class PlonkProofGenerator {
     return "0x" + hex.join("");
   }
 
-  public hexToUint8Array(hex: string): Uint8Array {
+  public static hexToUint8Array(hex: string): Uint8Array {
     const sanitisedHex = BigInt(hex).toString(16).padStart(64, "0");
 
     const len = sanitisedHex.length / 2;

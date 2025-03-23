@@ -71,8 +71,8 @@ async function main() {
     console.log("Proof generated successfully!");
 
     // Convert to hex for easier use in smart contracts
-    const proofGenerator = new PlonkProofGenerator();
-    const hexProof = proofGenerator.uint8ArrayToHex(proofResult.proof);
+    // const proofGenerator = new PlonkProofGenerator();
+    const hexProof = PlonkProofGenerator.uint8ArrayToHex(proofResult.proof);
     console.log("Hex proof:", hexProof);
     console.log("Inputs: ", proofResult.publicInputs);
     process.exit(1);

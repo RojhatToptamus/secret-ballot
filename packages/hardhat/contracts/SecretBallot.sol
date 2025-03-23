@@ -5,6 +5,10 @@ import "./ISecretBallot.sol";
 import {IVerifier} from "./IVerifier.sol";
 
 contract SecretBallot is ISecretBallot {
+
+  uint64 public constant DRAND_QUICKNET_GENESIS_TIME = 1692803367;
+  uint64 public constant DRAND_QUICKNET_PERIOD = 3;
+
   uint256 public proposalCounter;
 
   mapping(uint256 => Proposal) private proposals;
@@ -33,14 +37,15 @@ contract SecretBallot is ISecretBallot {
 
   function createProposal(
     string calldata description,
-    uint256 votingStart,
-    uint256 votingEnd
+    uint64 votingStart,
+    uint64 votingEnd
   ) external override onlyOwner returns (uint256) {
     require(votingStart < votingEnd, "Invalid voting period");
 
     proposalCounter++;
     proposals[proposalCounter] = Proposal({
       id: proposalCounter,
+      drandRound: timestamp_to_round(votingEnd),
       description: description,
       votingStart: votingStart,
       votingEnd: votingEnd,
@@ -83,7 +88,7 @@ contract SecretBallot is ISecretBallot {
     require(block.timestamp >= proposal.votingStart && block.timestamp <= proposal.votingEnd, "Voting closed");
 
     bytes32[] memory publicInputs = new bytes32[](4);
-    publicInputs[0] = keccak256(abi.encodePacked(voter));
+    publicInputs[0] = bytes32(uint256(uint160(voter)));
     publicInputs[1] = vote_commitment;
     publicInputs[2] = finalCommitmentHashes[proposalId];
     publicInputs[3] = final_votes_commitment;
@@ -108,7 +113,7 @@ contract SecretBallot is ISecretBallot {
     require(block.timestamp > proposal.votingEnd, "Voting still open");
 
     bytes32[] memory publicInputs = new bytes32[](2);
-    publicInputs[0] = keccak256(abi.encodePacked(total_yes));
+    publicInputs[0] = bytes32(uint256(uint160(total_yes)));
     publicInputs[1] = final_commitment;
     
     require(tallyVerifier.verify(proof, publicInputs), "Invalid vote proof");
@@ -120,4 +125,13 @@ contract SecretBallot is ISecretBallot {
     emit TallyPublished(proposalId);
     return true;
   }
+
+   function timestamp_to_round(uint64 timestamp) public override pure returns (uint64) {
+        if (timestamp < DRAND_QUICKNET_GENESIS_TIME) {
+            return 0;
+        }
+
+        uint64 elapsed_time = timestamp - DRAND_QUICKNET_GENESIS_TIME;
+        return (elapsed_time / DRAND_QUICKNET_PERIOD) + 1;
+    }
 }
