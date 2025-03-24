@@ -44,7 +44,7 @@ const deployYourContract: DeployFunction = async function (hre: HardhatRuntimeEn
     "0x0000000000000000000000000000000000000000000000000000000000000000",
     "0x199b8856d2a2f31f2ad1ebd3eefb00a8222a3d941624e15174bc5225eb052248",
   ];
-  console.log("👋 Initial greeting:", await yourContract.verify(hex_proof, public_inputs));
+  console.log("Verifying proof", await yourContract.verify(hex_proof, public_inputs));
 };
 
 export default deployYourContract;
